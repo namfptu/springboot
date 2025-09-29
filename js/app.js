@@ -13,7 +13,7 @@ const loading = document.getElementById('loading');
 const noProducts = document.getElementById('noProducts');
 const refreshBtn = document.getElementById('refreshBtn');
 
-// Biến trạng tháiiiiiii
+// Biến trạng tháiiiiiiiiii
 let editingProductId = null;
 let allProducts = [];
 
