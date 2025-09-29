@@ -13,7 +13,7 @@ const loading = document.getElementById('loading');
 const noProducts = document.getElementById('noProducts');
 const refreshBtn = document.getElementById('refreshBtn');
 
-// Biến trạng thái
+// Biến trạng tháiiiiiii
 let editingProductId = null;
 let allProducts = [];
 
@@ -21,22 +21,22 @@ let allProducts = [];
 function updateURL(action, id = null) {
     let newURL = window.location.origin + window.location.pathname;
     let params = new URLSearchParams();
-    
+
     if (action && action !== 'list') {
         params.set('action', action);
     }
     if (id) {
         params.set('id', id);
     }
-    
+
     const queryString = params.toString();
     if (queryString) {
         newURL += '?' + queryString;
     }
-    
+
     // Cập nhật URL mà không reload trang
     window.history.pushState({ action, id }, '', newURL);
-    
+
     // Cập nhật hiển thị URL
     const currentURL = document.getElementById('currentURL');
     if (currentURL) {
@@ -49,7 +49,7 @@ function handlePopState(event) {
     const urlParams = new URLSearchParams(window.location.search);
     const action = urlParams.get('action') || 'list';
     const id = urlParams.get('id');
-    
+
     // Xử lý theo action
     switch(action) {
         case 'add':
@@ -80,18 +80,18 @@ function formatPrice(price) {
 async function loadProducts() {
     loading.style.display = 'block';
     updateURL('list'); // Cập nhật URL khi load danh sách
-    
+
     try {
         console.log('Đang gọi API:', API_URL); // Debug log
         const response = await fetch(API_URL);
         console.log('Response status:', response.status); // Debug log
-        
+
         if (!response.ok) {
             const errorText = await response.text();
             console.error('API Error:', response.status, errorText);
             throw new Error(`API Error: ${response.status} - ${errorText}`);
         }
-        
+
         allProducts = await response.json();
         console.log('Loaded products:', allProducts); // Debug log
         renderProducts(allProducts);
@@ -131,11 +131,11 @@ productForm.addEventListener('submit', async (e) => {
         description: productDescriptionInput.value,
         price: productPriceInput.value // Gửi string để tương thích BigDecimal
     };
-    
+
     // Cập nhật URL khi đang thực hiện thao tác
     const action = editingProductId ? 'updating' : 'adding';
     updateURL(action, editingProductId);
-    
+
     try {
         let url = API_URL;
         let method = 'POST';
@@ -143,18 +143,18 @@ productForm.addEventListener('submit', async (e) => {
             url += `/${editingProductId}`;
             method = 'PUT';
         }
-        
+
         const response = await fetch(url, {
             method,
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(product)
         });
-        
+
         if (!response.ok) {
             const errorText = await response.text();
             throw new Error(`Failed to save product: ${response.status} - ${errorText}`);
         }
-        
+
         resetForm();
         await loadProducts(); // Sẽ cập nhật URL về 'list'
     } catch (error) {
@@ -169,10 +169,10 @@ productForm.addEventListener('submit', async (e) => {
 function editProduct(id) {
     const product = allProducts.find(p => p.id === id);
     if (!product) return;
-    
+
     // Cập nhật URL khi bắt đầu edit
     updateURL('edit', id);
-    
+
     productNameInput.value = product.name;
     productDescriptionInput.value = product.description || '';
     productPriceInput.value = product.price;
@@ -187,7 +187,7 @@ function resetForm() {
     submitBtn.textContent = 'Thêm Sản Phẩm';
     cancelBtn.style.display = 'none';
     editingProductId = null;
-    
+
     // Cập nhật URL về trạng thái thêm mới
     updateURL('add');
 }
@@ -204,7 +204,7 @@ function showDeleteModal(id) {
     deletingProductId = id;
     deleteModal.style.display = 'flex';
     deleteModal.classList.add('show');
-    
+
     // Cập nhật URL khi hiển thị modal xóa
     updateURL('delete', id);
 }
@@ -213,17 +213,17 @@ cancelDeleteBtn.addEventListener('click', () => {
     deleteModal.style.display = 'none';
     deleteModal.classList.remove('show');
     deletingProductId = null;
-    
+
     // Quay về danh sách khi cancel xóa
     updateURL('list');
 });
 
 confirmDeleteBtn.addEventListener('click', async () => {
     if (!deletingProductId) return;
-    
+
     // Cập nhật URL khi đang xóa
     updateURL('deleting', deletingProductId);
-    
+
     try {
         const response = await fetch(`${API_URL}/${deletingProductId}`, { method: 'DELETE' });
         if (!response.ok) {
@@ -253,7 +253,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const urlParams = new URLSearchParams(window.location.search);
     const action = urlParams.get('action') || 'list';
     const id = urlParams.get('id');
-    
+
     // Load products trước
     loadProducts().then(() => {
         // Sau đó xử lý action từ URL
@@ -277,7 +277,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 break;
         }
     });
-    
+
     // Listen cho browser back/forward
     window.addEventListener('popstate', handlePopState);
 });
@@ -288,7 +288,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (currentURL) {
         currentURL.textContent = window.location.href;
     }
-    
+
     // Demo URL changes function - hiển thị các URL example
     window.demonstrateURLChanges = function() {
         const examples = [
